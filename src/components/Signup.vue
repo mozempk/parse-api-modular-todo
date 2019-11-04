@@ -4,27 +4,26 @@
             <v-row justify="center">
                 <v-col cols="12" xs="12" sm="12" md="12" lg="8" xl="8">
                     <v-card tile outlined style="border-radius: 10px" class="pa-8">
-                        <v-form ref="form">
-                            <div class="display-1 font-weight-bold text-center">Login</div>
+                        <v-form ref="form" autocomplete="off">
+                            <div class="display-1 font-weight-bold text-center">Sign Up</div>
                             <v-divider class="mt-2"/>
                             <v-text-field
-                                placeholder="Username"
-                                autocomplete="username"
+                                placeholder="Choose a name"
                                 v-model="username"
-                                @keyup.enter="login"
+                                @keyup.enter="signup"
                                 :error="error && error.message == 'Username must be a string.'"
                                 />
                             <v-text-field
-                                placeholder="Password"
+                                placeholder="Choose a password"
                                 type="password"
-                                autocomplete="current-password"
+                                autocomplete="off"
                                 v-model="password"
-                                @keyup.enter="login"
+                                @keyup.enter="signup"
                                 :error="error && error.message == 'Password must be a string.'"
                                 />
-                            <v-btn block color="secondary" @click.stop="login">
+                            <v-btn block color="secondary" @click.stop="signup">
                                 <v-progress-circular indeterminate v-if="loading"/>
-                                <div v-if="!loading">Login</div>
+                                <div v-if="!loading">Signup</div>
                             </v-btn>
                         </v-form>
                         <v-alert class="mt-2" v-if="error || success" outlined border="left" :type="error ? 'error' : 'success'">{{error ? error.message : success.message}}</v-alert>
@@ -36,28 +35,26 @@
 </template>
 
 <script>
-/* eslint-disable no-console */
 import store from '../store'
 import {mapGetters} from 'vuex'
 export default {
-    name:"Login",
     data: () => ({
         username: undefined,
         password: undefined
     }),
+    methods: {
+        signup(){
+            store.dispatch('signup',{username: this.username, password: this.password})
+        }
+        
+    },
     computed: {
         ...mapGetters([
-            'user',
-            'loading',
             'error',
-            'success'
+            'success',
+            'loading',
+            'user'
         ])
-    },
-    methods: {
-        login() {
-            store.dispatch('login',{username: this.username, password: this.password})
-            this.$refs.form.reset()
-        }
     },
     watch: {
         user() {
@@ -69,6 +66,6 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 
 </style>
