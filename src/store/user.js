@@ -31,6 +31,28 @@ export default {
         },
     },
     actions: {
+        signUp({commit},payload){
+            commit('SET_LOADING',true)
+            api.user.signUp(payload)
+                .then(u=>{
+                    commit('SET_USER',u)
+                    commit('SET_LOADING',false)
+                    commit('SET_SUCCESS',{ message: "Welcome "+ u.get('username') +"!" })
+                    setTimeout(()=> {
+                        commit('SET_SUCCESS',undefined)
+                    },api.successTimeout)
+                    commit('SET_DISPLAY_LOGIN',false)
+                    commit('SET_DISPLAY_LOGOUT',true)                    
+                })
+                .catch(e => {
+                    commit('SET_ERROR',e)
+                    setTimeout(()=> {
+                        commit('SET_ERROR',undefined)
+                    },api.errorTimeout) 
+                    commit('SET_LOADING',false)                    
+                })
+        },
+
         login({commit},payload) {
             commit('SET_LOADING',true)
             api.user.login(payload.username,payload.password)
@@ -52,6 +74,7 @@ export default {
                     commit('SET_LOADING',false)
                 });
         },
+
         logout({commit}){
             commit('SET_LOADING',true)
             api.user.logout()

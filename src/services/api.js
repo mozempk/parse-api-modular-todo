@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import Parse from 'parse'
-Parse.initialize("6Me2XHk4VReucJ9buwts");
-Parse.serverURL = 'https://todo-api-parse.mpk.dynu.net/parse'
+Parse.initialize(process.env.VUE_APP_PARSE_APP_ID);
+Parse.serverURL = process.env.VUE_APP_PARSE_SERVER_URL
 
 class Todo extends Parse.Object {
     static className = 'Todo'
@@ -30,27 +30,33 @@ export default {
         current(){
             return Parse.User.current()
         },
-        signup(data){
+        signUp(data){
             let user = new Parse.User()
             const keys=Object.keys(data)
             for (let k in keys){
                 user.set(keys[k],data[keys[k]])
             }
-            return user.signup()
+            return user.signUp()
         }
     },
     todo: {
-        async get(user,limit){
+        getAll(limit){
             Todo.register()
             const q = new Parse.Query(Todo)
+            q.descending('createdAt')
             if (limit) q.limit(limit)
             return q.find()
+        },
+        getOne (id){
+            Todo.register()
+            const q = new Parse.Query(Todo)
+            return q.get(id)
         },
         create(data){
             const currentUser = Parse.User.current()
             const todo = new Todo()
             const keys = Object.keys(data)
-            todo.set('author',{"__type": "Pointer","className": "_User","objectId": currentUser.id})
+            todo.set('author',currentUser)
             const acl = new Parse.ACL(currentUser)
             acl.setPublicReadAccess(false)
             acl.setPublicWriteAccess(false)
@@ -63,11 +69,12 @@ export default {
             JSON.stringify(todo)
             return todo.save()
         },
-        // update(user,todo,data){
-
-        // },
-        // delete(user, todo){
-
-        // }
+        update(payload){
+            payload.todo.set(payload.prop,payload.value)
+            return payload.todo.save()
+        },
+        delete(todo){
+            return todo.destroy()
+        }
     }
 }
