@@ -1,12 +1,11 @@
 /* eslint-disable no-console */
 import VueRouter from 'vue-router'
 import Vue from 'vue';
-import Login from '../components/Login.vue'
-import Dashboard from '../components/Dashboard.vue'
+import LoginPage from '../components/LoginPage.vue'
 import TodoView from '../components/TodoView'
 import Landing from '../components/Landing'
 import Signup from '../components/Signup'
-import store from '../store'
+// import store from '../store'
 Vue.use(VueRouter);
 export default new VueRouter({
     routes: [
@@ -26,23 +25,19 @@ export default new VueRouter({
             component: TodoView
         },        
         {
-            name: 'Login',
+            name: 'login',
             path:'/login',
-            component: Login,
-            beforeEnter(to,from,next){
-                if (!store.state.userModule.user) next()
-                else next('/Dashboard')
-            }            
-        },
-        {
-            name: 'Dashboard',
-            path:'/dashboard',
-            component: Dashboard,
-            beforeEnter(to,from,next){
-                if (!store.state.userModule.user) next('Login')
-                else next()
-            }
+            component: LoginPage           
         }
+        // {
+        //     name: 'Dashboard',
+        //     path:'/dashboard',
+        //     component: Dashboard,
+        //     beforeEnter(to,from,next){
+        //         if (!store.state.userModule.user) next('Login')
+        //         else next()
+        //     }
+        // }
     ],
   });
   

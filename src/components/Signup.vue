@@ -44,7 +44,7 @@ export default {
     }),
     methods: {
         signup(){
-            store.dispatch('signup',{username: this.username, password: this.password})
+            store.dispatch('signUp',{username: this.username, password: this.password})
         }
         
     },
@@ -59,7 +59,7 @@ export default {
     watch: {
         user() {
             if (this.user) {
-                this.$router.push('/Dashboard')
+                this.$router.push('/todos')
             }
         }
     }
