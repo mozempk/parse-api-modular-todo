@@ -38,7 +38,7 @@
           </v-row>
         </v-col>
         <v-col col="2" >
-          <v-row justify="center" v-if="user">
+          <v-row justify="center" v-if="user" :key="user.get('username')">
             <v-dialog v-model="create" width="500">
               <template v-slot:activator="{ on }">
                 <v-btn large icon color=secondary v-on="on">
@@ -112,7 +112,7 @@ export default {
           return this.creating
           }
         else {
-          this.$router.push('Login')
+          this.$router.push('/')
           return false
         }
       }

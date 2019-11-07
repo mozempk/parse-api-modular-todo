@@ -12,7 +12,7 @@
                 </v-col>
                 <v-col cols="2" class="pl-2">
                     <v-row justify="center">
-                        <v-switch color="accent" inset v-model="complete" persistent-hint hint="Is it already done?"></v-switch>
+                        <v-switch color="accent" inset v-model="complete" persistent-hint hint="Already done?"></v-switch>
                     </v-row>
                 </v-col>              
             </v-row>
@@ -53,16 +53,13 @@ export default {
                 complete: this.complete
             }
             if (this.creating){
-                // console.info("[TodoForm][send][creating] payload: "+JSON.stringify(payload))
                 store.dispatch('new',payload)
-            }
-            if (this.editing){
-                console.info("[TodoForm][send][editing] payload: "+JSON.stringify(payload))
+                this.title = undefined
+                this.complete = false
             }
         },
         cancel(){
             if (this.creating) store.dispatch('setCreating',false)
-            if (this.editing) store.dispatch('setEditing',false)
         }
     },
     computed: {
@@ -71,7 +68,6 @@ export default {
             'error',
             'success',
             'creating',
-            'editing',
             'updating'
         ]),
     },
