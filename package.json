@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@vue/cli-plugin-pwa": "^4.0.5",
     "core-js": "^3.3.2",
     "parse": "^2.8.0",
     "vue": "^2.6.10",
