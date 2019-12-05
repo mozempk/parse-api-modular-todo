@@ -3,7 +3,7 @@
     <v-col cols="12" xs="12">
             
       <v-row class="mt-8 mb-4" justify="center">
-        <div class="display-2 font-weight-bold">{{user.get('username')}}'s todos</div>
+        <div class="display-2 font-weight-bold" v-if="user">{{user.get('username')}}'s todos</div>
         <v-col class="mt-8" cols="12" xs="12">
           <v-row justify="center" v-if="fetching">
             <v-progress-circular indeterminate ></v-progress-circular>
@@ -81,7 +81,8 @@ export default {
     },
   },
   created() {
-    store.dispatch('get')
+    if (this.user) store.dispatch('get')
+    else this.$router.push('/')
   }
 };
 </script>

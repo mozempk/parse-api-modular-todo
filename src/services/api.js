@@ -40,7 +40,7 @@ export default {
         }
     },
     todo: {
-        getAll(limit){
+        getAll(limit=false){
             Todo.register()
             const q = new Parse.Query(Todo)
             q.descending('createdAt')

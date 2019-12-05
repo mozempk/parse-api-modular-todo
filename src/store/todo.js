@@ -47,7 +47,7 @@ export default {
     actions: {
         get({commit}){
             commit('SET_FETCHING',true)
-            api.todo.getAll(false)
+            api.todo.getAll()
                 .then(data => {
                     commit('SET_TODOS',data)
                     commit('SET_FETCHING',false)
@@ -105,6 +105,7 @@ export default {
                         commit('SET_ERROR',undefined)
                     },api.errorTimeout)
                     commit('SET_EDITING',false)
+                    commit('SET_UPDATING',undefined)
                 })
 
         },

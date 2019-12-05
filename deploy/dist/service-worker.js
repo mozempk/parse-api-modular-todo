@@ -1,47 +1,43 @@
-/* eslint-disable no-console */
-/* eslint-disable no-useless-escape */
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-undef */
-module.exports = {
-  "transpileDependencies": [
-    "vuetify"
-  ],
-  pwa: {
-    workboxPluginMode:'GenerateSW',
-    swDest: '/service-worker.js',
-    include: [/\.html$/, /\.js$/, /\.xml$/, /\.css$/, /\.png$/, /\.json$/],
-    clientsClaim: true,
-    skipWaiting: true,
-    workboxOptions: {
-      importScripts: [
-        'https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/md5.js',
-        'https://cdn.jsdelivr.net/npm/idb-keyval@3/dist/idb-keyval-iife.min.js'
-      ],
-      runtimeCaching: [
-        {
-          //Fonts
-          urlPattern: new RegExp('^https://fonts\.googleapis\.com/'),
-          handler: 'StaleWhileRevalidate',
-          options: {
-            cacheableResponse: {
-              statuses: [0, 200]
-            }
-          }
-        },
-        {
-          //Icon Font
-          urlPattern: new RegExp('^https://cdn\.jsdelivr\.net/'),
-          handler: 'StaleWhileRevalidate',
-          options: {
-            cacheableResponse: {
-              statuses: [0, 200]
-            }
-          }
-        },
-        {
-          //API
-          urlPattern: new RegExp('^https://todo-api-parse\.mpk\.dynu\.net\/parse\/'),
-          handler: (event) => {
+/**
+ * Welcome to your Workbox-powered service worker!
+ *
+ * You'll need to register this file in your web app and you should
+ * disable HTTP caching for this file too.
+ * See https://goo.gl/nhQhGp
+ *
+ * The rest of the code is auto-generated. Please don't update this file
+ * directly; instead, make changes to your Workbox build configuration
+ * and re-run your build process.
+ * See https://goo.gl/2aRDsh
+ */
+
+importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
+
+importScripts(
+  "https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/md5.js",
+  "https://cdn.jsdelivr.net/npm/idb-keyval@3/dist/idb-keyval-iife.min.js",
+  "/precache-manifest.f494d983f9b28d5913fe5a5501d724e9.js"
+);
+
+workbox.core.setCacheNameDetails({prefix: "todo"});
+
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+});
+
+/**
+ * The workboxSW.precacheAndRoute() method efficiently caches and responds to
+ * requests for URLs in the manifest.
+ * See https://goo.gl/S9QRab
+ */
+self.__precacheManifest = [].concat(self.__precacheManifest || []);
+workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
+
+workbox.routing.registerRoute(/^https:\/\/fonts.googleapis.com\//, new workbox.strategies.StaleWhileRevalidate({ plugins: [new workbox.cacheableResponse.Plugin({ statuses: [ 0, 200 ] })] }), 'GET');
+workbox.routing.registerRoute(/^https:\/\/cdn.jsdelivr.net\//, new workbox.strategies.StaleWhileRevalidate({ plugins: [new workbox.cacheableResponse.Plugin({ statuses: [ 0, 200 ] })] }), 'GET');
+workbox.routing.registerRoute(/^https:\/\/todo-api-parse.mpk.dynu.net\/parse\//, (event) => {
             //const store = new idbKeyval.Store('API-Cache', 'PostResponses');
             const reqUrl = 'https://todo-api-parse.mpk.dynu.net/parse'
             const customStaleWhileRevalidate = async (event) => {
@@ -126,10 +122,4 @@ module.exports = {
                 // }           
               }
               customStaleWhileRevalidate(event)
-          },
-          method: 'POST'
-          }
-      ],
-    }
-  }
-}
+          }, 'POST');
